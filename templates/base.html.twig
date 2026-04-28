@@ -19,6 +19,20 @@
         {% endif %}
     </head>
     <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="{{ path('app_restaurant') }}">Home</a></li>
+                    {% if app.user %}
+                        <li><a href="{{ path('app_logout') }}">Log out</a></li>
+                    {% else %}
+                        <li><a href="{{ path('app_login') }}">Login</a></li>
+                    {% endif %}
+                    
+                </ul>
+            </nav>
+            <h1>Reservation</h1>
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>
