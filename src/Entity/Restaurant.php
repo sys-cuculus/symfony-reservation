@@ -36,6 +36,10 @@ class Restaurant
     #[ORM\OneToMany(targetEntity: OpeningHour::class, mappedBy: 'restaurant', orphanRemoval: true)]
     private Collection $openingHours;
 
+    #[ORM\ManyToOne(inversedBy: 'restaurants')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -139,6 +143,18 @@ class Restaurant
                 $openingHour->setRestaurant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }
