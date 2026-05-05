@@ -23,7 +23,7 @@
             <nav>
                 <ul>
                     <li><a href="{{ path('app_restaurant') }}">Home</a></li>
-                    {% if app.user %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li><a href="{{ path('app_logout') }}">Log out</a></li>
                         {% if 'ROLE_OWNER' in app.user.roles %}
                             <li><a href="{{ path('app_dashboard') }}">Dashboard</a></li>
