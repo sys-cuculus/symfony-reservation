@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
+{% block body %}
+    <h1>{{ restaurant.restaurantName }}</h1>
+    <p>Address: {{ restaurant.address }}</p>
+    <section>
+        <p>Opening Hours:</p>
+        <p><a class="button" href="#">Manage</a></p>
+    </section>
+    <section>
+        <p>reservations</p>
+    </section>
+    
+    
+    
+    
+        
+{% endblock %}

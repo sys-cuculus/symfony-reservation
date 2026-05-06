@@ -16,7 +16,7 @@
             {% for restaurant in restaurants %}
                 <tr>
                     <td>{{ restaurant.restaurantName }}</td>
-                    <td><a class="button" href="#">Manage</a></td>
+                    <td><a class="button" href="{{ path('app_restaurant_detail', {'id': restaurant.id})}}">Detail</a></td>
                 </tr>
             {% endfor %}
         </tbody>
