@@ -36,6 +36,7 @@ final class OwnerController extends AbstractController
         if ($user->getId() !== $restaurant->getOwner()->getId()) {
             throw $this->createAccessDeniedException();
         }
+        
         return $this->render('owner/show.html.twig', [
             'restaurant' => $restaurant,
             'openingHours' => $restaurant->getOpeningHours()->getValues(),

@@ -24,6 +24,6 @@
     </tbody>
 </table>
 <p>
-    <a class="button" href="#">Reserve</a>
+    <a class="button" href="{{ path('app_reservation_new', {'restaurantId': restaurant.id}) }}">Reserve</a>
 </p>
 {% endblock %}

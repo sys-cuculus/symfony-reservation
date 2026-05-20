@@ -4,8 +4,21 @@ namespace App\Entity;
 
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[
+    ORM\UniqueConstraint(
+        name: 'uniq_reservation_restaurant_date_time',
+        columns: ['restaurant_id', 'date_and_time']
+    ),
+]
+#[UniqueEntity(
+    fields: ['restaurant', 'dateAndTime'],
+    message: 'Seats unavailable at this date and time. Please choose another slot.',
+    errorPath: 'dateAndTime',
+    identifierFieldNames:['id']
+)]
 class Reservation
 {
     #[ORM\Id]

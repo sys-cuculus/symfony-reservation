@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reserve{% endblock %}
+
+{% block body %}
+<h3>Reserve a Table</h3>
+
+<section>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Reserve</button>
+    {{ form_end(form) }}
+</section>
+
+{% endblock %}
