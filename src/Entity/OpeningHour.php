@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
+use App\Enum\DayOfWeek;
 use App\Repository\OpeningHourRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: OpeningHourRepository::class)]
 class OpeningHour
@@ -18,17 +21,17 @@ class OpeningHour
     #[ORM\JoinColumn(nullable: false)]
     private ?Restaurant $restaurant = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $date = null;
+    #[ORM\Column(enumType: DayOfWeek::class)]
+    private ?DayOfWeek $dayOfWeek = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTime $close_time = null;
+    private ?\DateTime $closeTime = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTime $open_time = null;
+    private ?\DateTime $openTime = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $closed_flag = null;
+    private ?bool $closedFlag = null;
 
     public function getId(): ?int
     {
@@ -47,51 +50,71 @@ class OpeningHour
         return $this;
     }
 
-    public function getDate(): ?string
+    public function getDayOfWeek(): ?DayOfWeek
     {
-        return $this->date;
+        return $this->dayOfWeek;
     }
 
-    public function setDate(string $date): static
+    public function setDayOfWeek(DayOfWeek $dayOfWeek): static
     {
-        $this->date = $date;
+        $this->dayOfWeek = $dayOfWeek;
 
         return $this;
     }
 
     public function getCloseTime(): ?\DateTime
     {
-        return $this->close_time;
+        return $this->closeTime;
     }
 
-    public function setCloseTime(\DateTime $close_time): static
+    public function setCloseTime(?\DateTime $closeTime): static
     {
-        $this->close_time = $close_time;
+        $this->closeTime = $closeTime;
 
         return $this;
     }
 
     public function getOpenTime(): ?\DateTime
     {
-        return $this->open_time;
+        return $this->openTime;
     }
 
-    public function setOpenTime(\DateTime $open_time): static
+    public function setOpenTime(?\DateTime $openTime): static
     {
-        $this->open_time = $open_time;
+        $this->openTime = $openTime;
 
         return $this;
     }
 
     public function isClosedFlag(): ?bool
     {
-        return $this->closed_flag;
+        return $this->closedFlag;
     }
 
-    public function setClosedFlag(?bool $closed_flag): static
+    public function setClosedFlag(?bool $closedFlag): static
     {
-        $this->closed_flag = $closed_flag;
+        $this->closedFlag = $closedFlag;
 
         return $this;
+    }
+
+    #[Assert\Callback]
+    public function validateOpeningTimes(ExecutionContextInterface $context): void
+    {
+        if ($this->isClosedFlag()) {
+            return;
+        }
+
+        if ($this->openTime === null) {
+            $context->buildViolation('Open time is required')
+                ->atPath('openTime')
+                ->addViolation();
+        }
+
+        if ($this->closeTime === null) {
+            $context->buildViolation('Close time is required')
+                ->atPath('closeTime')
+                ->addViolation();
+        }
     }
 }

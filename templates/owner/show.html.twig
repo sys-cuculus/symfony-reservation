@@ -7,7 +7,37 @@
     <p>Address: {{ restaurant.address }}</p>
     <section>
         <p>Opening Hours:</p>
-        <p><a class="button" href="#">Manage</a></p>
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Open
+                        </th>
+                        <th>
+                            Close
+                        </th>
+                        <th>
+                            Closed
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hours in openingHours %}
+                        <tr>
+                            <td>{{ hours.dayOfWeek.label() }}</td>
+                            <td>{% if hours.openTime %}{{ hours.openTime|date('H:i') }}{% endif %}</td>
+                            <td>{% if hours.closeTime %}{{ hours.closeTime|date('H:i') }}{% endif %}</td>
+                            <td>{% if hours.closedFlag %}<input type="checkbox" checked disabled>{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </p>
+        <p><a class="button" href="{{ path('app_restaurant_opening_hours', {'id': restaurant.id})}}">Manage</a></p>
     </section>
     <section>
         <p>reservations</p>

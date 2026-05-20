@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\OpeningHour;
 use App\Entity\Restaurant;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -34,6 +35,13 @@ class AppFixtures extends Fixture
         $restaurant->setTel(('1234567890'));
         $restaurant->setOwner($user);
         $manager->persist($restaurant);
+        
+        for ($i=1; $i<=7;$i++) {
+            $openingHour = new OpeningHour();
+            $openingHour->setRestaurant($restaurant);
+            $openingHour->setDayOfWeek($i);
+            $manager->persist($openingHour);
+        }
 
 
         $manager->flush();

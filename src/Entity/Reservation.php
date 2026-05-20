@@ -22,10 +22,10 @@ class Reservation
     private ?User $customer = null;
 
     #[ORM\Column]
-    private ?int $number_of_people = null;
+    private ?int $numberOfPeople = null;
 
     #[ORM\Column]
-    private ?\DateTime $date_and_time = null;
+    private ?\DateTime $dateAndTime = null;
 
     public function getId(): ?int
     {
@@ -58,24 +58,24 @@ class Reservation
 
     public function getNumberOfPeople(): ?int
     {
-        return $this->number_of_people;
+        return $this->numberOfPeople;
     }
 
-    public function setNumberOfPeople(int $number_of_people): static
+    public function setNumberOfPeople(int $numberOfPeople): static
     {
-        $this->number_of_people = $number_of_people;
+        $this->numberOfPeople = $numberOfPeople;
 
         return $this;
     }
 
     public function getDateAndTime(): ?\DateTime
     {
-        return $this->date_and_time;
+        return $this->dateAndTime;
     }
 
-    public function setDateAndTime(\DateTime $date_and_time): static
+    public function setDateAndTime(\DateTime $dateAndTime): static
     {
-        $this->date_and_time = $date_and_time;
+        $this->dateAndTime = $dateAndTime;
 
         return $this;
     }
