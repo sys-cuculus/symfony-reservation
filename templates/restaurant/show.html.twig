@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Restaurants{% endblock %}
+
+{% block body %}
+<h1>{{ restaurant.restaurantName }}</h1>
+<p>Address: {{ restaurant.address }}</p>
+<p>Tel: {{ restaurant.tel }}</p>
+<p>Opening Hours:</p>
+<table>
+    <tbody>
+        {% for openingHour in restaurant.openingHours %}
+            <tr>
+                <td>{{ openingHour.dayOfWeek.label() }}</td>
+                <td>
+                    {% if openingHour.closedFlag %}
+                        Closed
+                    {% else %}
+                        {{ openingHour.openTime|date('H:i') }} - {{ openingHour.closeTime|date('H:i') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>
+    <a class="button" href="{{ path('app_reservation_new', {'restaurantId': restaurant.id}) }}">Reserve</a>
+</p>
+{% endblock %}

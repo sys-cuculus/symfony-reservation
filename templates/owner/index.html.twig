@@ -3,4 +3,23 @@
 {% block title %}Dashboard{% endblock %}
 {% block header_title %}Dashboard{% endblock %}
 {% block body %}
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Restaurant
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for restaurant in restaurants %}
+                <tr>
+                    <td>{{ restaurant.restaurantName }}</td>
+                    <td><a class="button" href="{{ path('app_restaurant_detail', {'id': restaurant.id})}}">Detail</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
 {% endblock %}
