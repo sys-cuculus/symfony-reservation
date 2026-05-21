@@ -29,6 +29,7 @@ final class ReservationController extends AbstractController
         ]);
     }
 
+    
     #[Route(
         '/reservation/{restaurantId}/new',
         name: 'app_reservation_new',
@@ -67,6 +68,7 @@ final class ReservationController extends AbstractController
         ]);
     }
 
+
     #[Route('/reservation/{id}/edit', name: 'app_reservation_edit')]
     public function edit(
         Reservation $reservation,
@@ -90,6 +92,18 @@ final class ReservationController extends AbstractController
             'openingHoursData' => $this->formatOpeningHoursForJavascript($openingHours),
         ]);
     }
+
+
+    #[Route('/reservation/{id}/delete', name: 'app_reservation_delete')]
+    public function delete(Reservation $reservation, EntityManagerInterface $manager): Response
+    {
+        $manager->remove($reservation);
+        $manager->flush();
+        $this->addFlash('notice', 'Reservation cancelled successfully');
+
+        return $this->redirectToRoute('app_reservation');
+    }
+
 
     /**
      * @param OpeningHour[] $openingHours

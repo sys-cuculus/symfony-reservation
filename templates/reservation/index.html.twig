@@ -15,6 +15,7 @@
                 <th>Restaurant</th>
                 <th>Date and Time</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -26,11 +27,23 @@
                         </a>
                     </td>
                     <td>{{ reservation.dateAndTime|date('d-m-Y H:i') }}</td>
-                    <td><a class="button" href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Manage</a></td>
+                    <td>
+                        <a 
+                            class="button"
+                            href="{{ path('app_reservation_edit', {'id': reservation.id}) }}"
+                        >Manage</a>
+                    </td>
+                    <td>
+                        <a 
+                            class="button" 
+                            href="{{ path('app_reservation_delete', {'id': reservation.id}) }}"
+                            onclick="return confirm('Are you sure you want to cancel this reservation?');"
+                        >Cancel</a>
+                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="3">No reservations found.</td>
+                    <td colspan="4">No reservations found.</td>
                 </tr>
             {% endfor %}
         </tbody>
