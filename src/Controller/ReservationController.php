@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\OpeningHour;
 use App\Entity\Reservation;
 use App\Entity\Restaurant;
 use App\Form\ReservationType;
@@ -31,6 +32,7 @@ final class ReservationController extends AbstractController
         EntityManagerInterface $manager,
     ): Response
     {
+        $openingHours = $restaurant->getOpeningHours()->getValues();
         $reservation = new Reservation();
         $reservation->setRestaurant($restaurant);
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -46,10 +48,24 @@ final class ReservationController extends AbstractController
 
             return $this->redirectToRoute('app_restaurant');
         }
+        
         return $this->render('reservation/new.html.twig', [
             'restaurant' => $restaurant,
-            'openingHours' => $restaurant->getOpeningHours()->getValues(),
+            'openingHoursData' => $this->formatOpeningHoursForJavascript($openingHours),
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @param OpeningHour[] $openingHours
+     */
+    private function formatOpeningHoursForJavascript(array $openingHours): array
+    {
+        return array_map(static fn (OpeningHour $openingHour): array => [
+            'dayOfWeek' => $openingHour->getDayOfWeek()->value,
+            'openTime' => $openingHour->getOpenTime()?->format('H:i'),
+            'closeTime' => $openingHour->getCloseTime()?->format('H:i'),
+            'closed' => $openingHour->isClosedFlag(),
+        ], $openingHours);
     }
 }

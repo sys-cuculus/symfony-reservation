@@ -8,9 +8,6 @@
         {% block stylesheets %}
         {% endblock %}
 
-        {% block javascripts %}
-        {% endblock %}
-
         {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
         {% if frankenphpHotReload %}
         <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
@@ -38,5 +35,7 @@
             <h1>{% block header_title %}Reservation{% endblock %}</h1>
         </header>
         {% block body %}{% endblock %}
+        
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
