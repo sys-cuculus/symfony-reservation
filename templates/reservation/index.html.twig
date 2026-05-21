@@ -4,7 +4,11 @@
 
 {% block body %}
     <h1>My Reservations</h1>
-
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
     <table>
         <thead>
             <tr>
@@ -22,7 +26,7 @@
                         </a>
                     </td>
                     <td>{{ reservation.dateAndTime|date('d-m-Y H:i') }}</td>
-                    <td><a class="button" href="#">Manage</a></td>
+                    <td><a class="button" href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Manage</a></td>
                 </tr>
             {% else %}
                 <tr>

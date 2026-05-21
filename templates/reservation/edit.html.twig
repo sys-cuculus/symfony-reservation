@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reserve{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('js/reservation.js') }}" defer></script>
+<script id="reservation-opening-hours" type="application/json">{{ openingHoursData|json_encode|raw }}</script>
+{% endblock %}
+
+{% block body %}
+<h3>Manage Reservation</h3>
+
+<section>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Change Reservation</button>
+    {{ form_end(form) }}
+</section>
+
+{% endblock %}
