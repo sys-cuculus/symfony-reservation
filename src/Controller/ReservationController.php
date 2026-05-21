@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\OpeningHour;
 use App\Entity\Reservation;
 use App\Entity\Restaurant;
+use App\Entity\User;
 use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,14 +14,17 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+
 
 final class ReservationController extends AbstractController
 {
     #[Route('/reservation', name: 'app_reservation')]
-    public function index(): Response
+    public function index(#[CurrentUser] User  $user): Response
     {
         return $this->render('reservation/index.html.twig', [
-            'controller_name' => 'ReservationController',
+            'user' => $user,
+            'reservations' => $user->getReservations()->getValues(),
         ]);
     }
 
