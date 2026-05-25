@@ -3,6 +3,11 @@
 {% block title %}Dashboard{% endblock %}
 {% block header_title %}Dashboard{% endblock %}
 {% block body %}
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
     <table>
         <thead>
             <tr>
@@ -21,5 +26,8 @@
             {% endfor %}
         </tbody>
     </table>
+    <p>
+        <a class="button" href="{{ path('app_restaurant_new')}}">Add restaurant</a>
+    </p>
     
 {% endblock %}

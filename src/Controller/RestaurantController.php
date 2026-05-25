@@ -19,7 +19,7 @@ final class RestaurantController extends AbstractController
     }
 
     #[Route('/restaurant/{id}', name: 'app_restaurant_show')]
-    public function show(RestaurantRepository $repository, Restaurant $restaurant): Response
+    public function show(Restaurant $restaurant): Response
     {
         return $this->render('restaurant/show.html.twig', [
             'restaurant' => $restaurant,

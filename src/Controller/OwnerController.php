@@ -7,6 +7,7 @@ use App\Entity\Restaurant;
 use App\Entity\User;
 use App\Form\OpeningHoursFormType;
 use App\Form\OpeningHourType;
+use App\Form\RestaurantType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,7 @@ final class OwnerController extends AbstractController
     #[Route('/dashboard', name: 'app_dashboard')]
     public function index(#[CurrentUser] User  $user): Response
     {
-        return $this->render('owner/index.html.twig', [
+        return $this->render('owner/restaurant/index.html.twig', [
             'restaurants' => $user->getRestaurants()->getValues(),
         ]);
     }
@@ -37,10 +38,37 @@ final class OwnerController extends AbstractController
             throw $this->createAccessDeniedException();
         }
         
-        return $this->render('owner/show.html.twig', [
+        return $this->render('owner/restaurant/show.html.twig', [
             'restaurant' => $restaurant,
             'openingHours' => $restaurant->getOpeningHours()->getValues(),
             'reservations' => $restaurant->getReservations()->getValues(),
+        ]);
+    }
+
+    #[Route('/restaurant/new', name: 'app_restaurant_new')]
+    public function new(
+        #[CurrentUser] User $user,
+        Request $reauest,
+        EntityManagerInterface $manager,
+    ): Response
+    {
+        $form = $this->createForm(RestaurantType::class);
+
+        $form->handleRequest($reauest);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $restaurant = $form->getData();
+            $restaurant
+                ->setOwner($user)
+                ->initializeOpeningHours();
+            
+            $manager->persist($restaurant);
+            $manager->flush();
+            $this->addFlash('notice', 'Restaurant created successfully');
+            return $this->redirectToRoute('app_dashboard');
+        }
+
+        return $this->render('owner/restaurant/new.html.twig', [
+            'form' => $form,
         ]);
     }
 
@@ -69,7 +97,7 @@ final class OwnerController extends AbstractController
             $this->addFlash('notice', 'Working hours set successfully');
         }
 
-        return $this->render('owner/openingHours.html.twig', [
+        return $this->render('owner/restaurant/openingHours.html.twig', [
             'restaurant'    => $restaurant,
             'openingHours'  => $restaurant->getOpeningHours()->getValues(),
             'form'          => $form
