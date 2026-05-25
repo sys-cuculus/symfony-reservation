@@ -73,6 +73,18 @@ final class OwnerController extends AbstractController
     }
 
 
+    #[Route('restaurant/{id}/delete', name: 'app_restaurant_delete', requirements: ['id' => Requirement::DIGITS])]
+    public function delete(Restaurant $restaurant, EntityManagerInterface $manager): Response
+    {
+        $manager->remove($restaurant);
+        $manager->flush();
+        $this->addFlash('notice', 'Restaurant successfully deleted');
+        
+        return $this->redirectToRoute('app_dashboard');
+    }
+
+
+
     #[Route('/restaurant/{id}/opening-hours', name: 'app_restaurant_opening_hours', requirements: ['id' => Requirement::DIGITS])]
     public function openingHours(
         #[CurrentUser] User  $user,
@@ -103,4 +115,5 @@ final class OwnerController extends AbstractController
             'form'          => $form
         ]);
     }
+
 }
