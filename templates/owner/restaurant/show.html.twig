@@ -42,6 +42,13 @@
     <section>
         <p>reservations</p>
     </section>
+    <section>
+        <a 
+            class="button"
+            href="{{ path('app_restaurant_delete', {'id': restaurant.id}) }}"
+            onclick="return confirm('Are you sure you want to delete this restaurant?')"
+        >Delete restaurant</a>
+    </section>
     
     
     

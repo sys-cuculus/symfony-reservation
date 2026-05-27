@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\DayOfWeek;
 use App\Repository\RestaurantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -33,7 +34,7 @@ class Restaurant
     /**
      * @var Collection<int, OpeningHour>
      */
-    #[ORM\OneToMany(targetEntity: OpeningHour::class, mappedBy: 'restaurant', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: OpeningHour::class, mappedBy: 'restaurant',cascade: ['persist'], orphanRemoval: true)]
     private Collection $openingHours;
 
     #[ORM\ManyToOne(inversedBy: 'restaurants')]
@@ -155,6 +156,17 @@ class Restaurant
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function initializeOpeningHours(): static
+    {
+        foreach (DayOfWeek::cases() as $day) {
+            $openingHour = new OpeningHour();
+            $openingHour->setDayOfWeek($day);
+            $this->addOpeningHour($openingHour);
+        }
 
         return $this;
     }
