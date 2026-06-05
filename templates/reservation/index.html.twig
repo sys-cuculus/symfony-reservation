@@ -5,16 +5,15 @@
 {% block body %}
     <h1>My Reservations</h1>
     {% for message in app.flashes('notice') %}
-        <div class="flash-notice">
+        <p class="notice">
             {{ message }}
-        </div>
+        </p>
     {% endfor %}
     <table>
         <thead>
             <tr>
                 <th>Restaurant</th>
                 <th>Date and Time</th>
-                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -33,17 +32,10 @@
                             href="{{ path('app_reservation_edit', {'id': reservation.id}) }}"
                         >Manage</a>
                     </td>
-                    <td>
-                        <a 
-                            class="button" 
-                            href="{{ path('app_reservation_delete', {'id': reservation.id}) }}"
-                            onclick="return confirm('Are you sure you want to cancel this reservation?');"
-                        >Cancel</a>
-                    </td>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="4">No reservations found.</td>
+                    <td colspan="4">No reservations found</td>
                 </tr>
             {% endfor %}
         </tbody>

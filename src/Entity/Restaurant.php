@@ -29,6 +29,7 @@ class Restaurant
      * @var Collection<int, Reservation>
      */
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'restaurant', orphanRemoval: true)]
+    #[ORM\OrderBy(['dateAndTime' => 'ASC'])]
     private Collection $reservations;
 
     /**

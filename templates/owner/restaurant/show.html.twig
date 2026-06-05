@@ -6,7 +6,7 @@
     <h1>{{ restaurant.restaurantName }}</h1>
     <p>Address: {{ restaurant.address }}</p>
     <section>
-        <p>Opening Hours:</p>
+        <h3>Opening hours</h3>
         <p>
             <table>
                 <thead>
@@ -40,7 +40,32 @@
         <p><a class="button" href="{{ path('app_restaurant_opening_hours', {'id': restaurant.id})}}">Manage</a></p>
     </section>
     <section>
-        <p>reservations</p>
+        <h3>Reservations</h3>
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Date and time
+                        </th>
+                        <th>
+                            Number of people
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.dateAndTime|date('d M Y H:i') }}</td>
+                            <td>{{ reservation.numberOfPeople }}</td>
+                            <td><a class="button" href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Manage</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </p>
     </section>
     <section>
         <a 

@@ -40,6 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Reservation>
      */
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'customer', orphanRemoval: true)]
+    #[ORM\OrderBy(['dateAndTime' => 'ASC'])]
     private Collection $reservations;
 
     /**
