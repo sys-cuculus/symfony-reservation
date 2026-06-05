@@ -4,9 +4,9 @@
 {% block header_title %}Dashboard{% endblock %}
 {% block body %}
     {% for message in app.flashes('notice') %}
-        <div class="flash-notice">
+        <p class="notice">
             {{ message }}
-        </div>
+        </p>
     {% endfor %}
     <table>
         <thead>

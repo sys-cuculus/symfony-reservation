@@ -55,10 +55,10 @@ final class ReservationController extends AbstractController
 
             $manager->persist($reservation);
             $manager->flush();
-            $this->addFlash('notice', 'Resered successfully');
+            $this->addFlash('notice', 'Reserved successfully');
 
 
-            return $this->redirectToRoute('app_restaurant');
+            return $this->redirectToRoute('app_reservation');
         }
         
         return $this->render('reservation/new.html.twig', [
@@ -69,7 +69,8 @@ final class ReservationController extends AbstractController
     }
 
 
-    #[Route('/reservation/{id}/edit', name: 'app_reservation_edit')]
+    #[Route('/reservation/{id}/edit', name: 'app_reservation_edit', requirements: ['id' => Requirement::DIGITS])]
+    #[IsGranted('edit', subject: 'reservation')]
     public function edit(
         Reservation $reservation,
         Request $request,
@@ -88,13 +89,14 @@ final class ReservationController extends AbstractController
         }
 
         return $this->render('reservation/edit.html.twig', [
+            'reservation' => $reservation,
             'form' => $form,
             'openingHoursData' => $this->formatOpeningHoursForJavascript($openingHours),
         ]);
     }
 
 
-    #[Route('/reservation/{id}/delete', name: 'app_reservation_delete')]
+    #[Route('/reservation/{id}/delete', name: 'app_reservation_delete', requirements: ['id' => Requirement::DIGITS])]
     public function delete(Reservation $reservation, EntityManagerInterface $manager): Response
     {
         $manager->remove($reservation);

@@ -15,8 +15,10 @@
                 <td>
                     {% if openingHour.closedFlag %}
                         Closed
-                    {% else %}
+                    {% elseif openingHour.openTime and openingHour.closeTime %}
                         {{ openingHour.openTime|date('H:i') }} - {{ openingHour.closeTime|date('H:i') }}
+                    {% else %}
+                        -
                     {% endif %}
                 </td>
             </tr>

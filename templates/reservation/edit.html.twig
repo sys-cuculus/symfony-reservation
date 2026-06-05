@@ -9,12 +9,21 @@
 
 {% block body %}
 <h3>Manage Reservation</h3>
-
+<h4>{{ reservation.restaurant.restaurantName }}</h4>
 <section>
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <button type="submit">Change Reservation</button>
     {{ form_end(form) }}
+</section>
+<section>
+    <p>
+        <a 
+            class="button" 
+            href="{{ path('app_reservation_delete', {'id': reservation.id}) }}"
+            onclick="return confirm('Are you sure you want to cancel this reservation?');"
+        >Cancel</a>
+    </p>
 </section>
 
 {% endblock %}

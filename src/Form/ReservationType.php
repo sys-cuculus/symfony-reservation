@@ -22,12 +22,12 @@ class ReservationType extends AbstractType
         $builder
             ->add('numberOfPeople', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter number of people',
-                    ]),
-                    new Positive([
-                        'message' => 'Please enter a valid number of people',
-                    ])
+                    new NotBlank(
+                        message: 'Please enter number of people',
+                    ),
+                    new Positive(
+                        message: 'Please enter a valid number of people',
+                    )
                 ],
             ])
             ->add('dateAndTime', DateTimeType::class, [
@@ -35,13 +35,13 @@ class ReservationType extends AbstractType
                 'time_widget' => 'choice',
                 'minutes' => [0, 30],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter date and time of reservation',
-                    ]),
-                    new GreaterThan([
-                        'value' => 'now',
-                        'message' => 'The reservation date and time must be in the future',
-                    ]),
+                    new NotBlank(
+                        message: 'Please enter date and time of reservation',
+                    ),
+                    new GreaterThan(
+                        value: 'now',
+                        message: 'The reservation date and time must be in the future',
+                    ),
                 ],
             ])
         ;

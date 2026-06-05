@@ -17,29 +17,40 @@
     </head>
     <body>
         <header>
-            <nav>
-                <ul>
-                    <li><a href="{{ path('app_restaurant') }}">Home</a></li>
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <li><a href="{{ path('app_logout') }}">Log out</a></li>
+                <p>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                         {{ app.user.email }}
+                {% endif %}
+                </p>
+                <p>
+                <nav>
+                    <ul>
+                        <li><a href="{{ path('app_restaurant') }}">Home</a></li>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li><a href="{{ path('app_logout') }}">Log out</a></li>
+                            
+                            <li><a 
+                                {% if 'ROLE_OWNER' in app.user.roles %} 
+                                    href="{{ path('app_dashboard') }}"
+                                {% else %}
+                                    href="{{ path('app_reservation') }}"
+                                {% endif %}
+                                >Dashboard</a>
+                            </li>
+                            
+                        {% else %}
+                            <li><a href="{{ path('app_login') }}">Login</a></li>
+                            <li><a href="{{ path('app_register') }}">Sign up</a></li>
+                        {% endif %}
                         
-                        <li><a 
-                            {% if 'ROLE_OWNER' in app.user.roles %} 
-                                href="{{ path('app_dashboard') }}"
-                            {% else %}
-                                href="{{ path('app_reservation') }}"
-                            {% endif %}
-                            >Dashboard</a>
-                        </li>
-                        
-                    {% else %}
-                        <li><a href="{{ path('app_login') }}">Login</a></li>
-                        <li><a href="{{ path('app_register') }}">Sign up</a></li>
-                    {% endif %}
-                    
-                </ul>
-            </nav>
-            <h1>{% block header_title %}Reservation{% endblock %}</h1>
+                    </ul>
+                </nav>
+                </p>
+            <p>
+                <h1>{% block header_title %}Reservation{% endblock %}</h1>
+                
+            </p>
+            
         </header>
         {% block body %}{% endblock %}
         

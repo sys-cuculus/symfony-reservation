@@ -5,6 +5,8 @@ namespace App\DataFixtures;
 use App\Entity\OpeningHour;
 use App\Entity\Restaurant;
 use App\Entity\User;
+use App\Enum\DayOfWeek;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -22,27 +24,38 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // create a normal user
         $user = new User();
-        $user->setEmail('testowner@gmail.com');
+        $password = $this->hasher->hashPassword($user, 'testuser');
+        $user   ->setEmail('testuser@gmail.com')
+                ->setPassword($password);
+
+        $manager->persist($user);
+
+        // create an admin user
+        $user = new User();
         $password = $this->hasher->hashPassword($user, 'testowner');
-        $user->setPassword($password);
-        $user->setRoles(['ROLE_OWNER']);
+
+        $user   ->setEmail('testowner@gmail.com')
+                ->setPassword($password)
+                ->setRoles(['ROLE_OWNER']);
         $manager->persist($user);
 
         $restaurant = new Restaurant();
-        $restaurant->setRestaurantName('Lyon restaurant');
-        $restaurant->setAddress('Lyon');
-        $restaurant->setTel(('1234567890'));
-        $restaurant->setOwner($user);
+        $restaurant ->setRestaurantName('Lyon restaurant')
+                    ->setAddress('Lyon')
+                    ->setTel(('1234567890'))
+                    ->setOwner($user)
+                    ->initializeOpeningHours();
         $manager->persist($restaurant);
-        
-        for ($i=1; $i<=7;$i++) {
-            $openingHour = new OpeningHour();
-            $openingHour->setRestaurant($restaurant);
-            $openingHour->setDayOfWeek($i);
-            $manager->persist($openingHour);
-        }
 
+        foreach (DayOfWeek::cases() as $day) {
+            $openingHour = new OpeningHour();
+            $openingHour->setDayOfWeek($day)
+                        ->setRestaurant($restaurant)
+                        ->setOpenTime(DateTime::createFromFormat('H:i', '9:00'))
+                        ->setCloseTime(DateTime::createFromFormat('H:i', '23:00'));
+        }
 
         $manager->flush();
     }
