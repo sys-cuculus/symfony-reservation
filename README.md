@@ -1,60 +1,103 @@
-# Symfony Docker
+# Symfony Reservation
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
+Application de démonstration développée avec Symfony pour présenter mes compétences dans le cadre d'une recherche d'emploi.
 
-Specially tailored for coding agents: ships with a [Dev Container](https://containers.dev/) configuration
-that lets [Claude Code](https://claude.ai/claude-code) (and other AI coding assistants) run in fully autonomous
-mode inside a sandboxed environment.
+Le projet met en scène une plateforme simple de réservation de restaurants, avec une logique autour des propriétaires, des restaurants et des réservations. L'objectif est de montrer une base applicative lisible, testable et proche d'un cas métier concret.
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
+## Objectifs du projet
 
-## Getting Started
+- Montrer une maîtrise pratique de Symfony et de l'écosystème PHP moderne.
+- Structurer une application web autour de contrôleurs, entités, fixtures et tests fonctionnels.
+- Présenter un exemple de code compréhensible pour un recruteur ou une équipe technique.
+- Servir de support de discussion lors d'un entretien technique en France.
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --pull --no-cache` to build fresh images
-3. Run `docker compose up --wait` to set up and start a fresh Symfony project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+## Fonctionnalités principales
 
-## Features
+- Gestion des propriétaires.
+- Gestion des restaurants.
+- Création et consultation de réservations.
+- Données de démonstration via fixtures.
+- Tests fonctionnels pour les parcours principaux.
 
-- Production, development and CI ready
-- Just 1 service by default
-- Super-readable configuration
-- Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://frankenphp.dev/docs/worker/)
-- [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-- Automatic HTTPS (in dev and prod)
-- HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-- Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-- [Vulcain](https://vulcain.rocks) support
-- Native [XDebug](docs/xdebug.md) integration
-- [Hot Reloading](https://frankenphp.dev/docs/hot-reload/)
-- [Dev Container](https://containers.dev/) support, optimized for AI coding agents
-- [AI coding agents](docs/agents.md) with sandboxing out of the box
-- Rootless, slim production image
+## Stack technique
 
-**Enjoy!**
+- PHP
+- Symfony
+- Doctrine ORM
+- Twig
+- PHPUnit
+- Fixtures Symfony/Doctrine
 
-## Docs
+## Installation
 
-1. [Options available](docs/options.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using MySQL instead of PostgreSQL](docs/mysql.md)
-8. [Using Alpine Linux instead of Debian](docs/alpine.md)
-9. [Using a Makefile](docs/makefile.md)
-10. [Updating the template](docs/updating.md)
-11. [Troubleshooting](docs/troubleshooting.md)
-12. [Using AI Coding Agents](docs/agents.md)
+Cloner le projet, puis installer les dépendances PHP:
 
-## License
+```bash
+composer install
+```
 
-Symfony Docker is available under the MIT License.
+Configurer les variables d'environnement dans `.env.local`, notamment la connexion à la base de données:
 
-## Credits
+```dotenv
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
+```
 
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+Créer la base de données et appliquer les migrations:
+
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+```
+
+Charger les données de démonstration:
+
+```bash
+php bin/console doctrine:fixtures:load
+```
+
+Lancer le serveur de développement:
+
+```bash
+symfony server:start
+```
+
+ou, sans Symfony CLI:
+
+```bash
+php -S 127.0.0.1:8000 -t public
+```
+
+L'application est ensuite disponible à l'adresse:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Tests
+
+Lancer la suite de tests:
+
+```bash
+php bin/phpunit
+```
+
+Les tests couvrent notamment les contrôleurs liés aux propriétaires, restaurants et réservations.
+
+## Structure du projet
+
+```text
+src/Controller/        Contrôleurs Symfony
+src/DataFixtures/      Données de démonstration
+tests/Controller/      Tests fonctionnels des parcours web
+templates/             Vues Twig
+config/                Configuration Symfony
+public/                Point d'entrée public
+```
+
+## Pourquoi ce projet
+
+Ce dépôt a été conçu comme un projet de démonstration pour ma recherche d'emploi en France. Il vise à montrer ma capacité à construire une application Symfony propre, à organiser une logique métier simple, à écrire des tests et à documenter un projet de façon exploitable par une équipe.
+
+## Auteur
+
+Kazuhiro NOMURA
