@@ -30,23 +30,19 @@ Le projet met en scène une plateforme simple de réservation de restaurants, av
 
 ## Installation
 
-Cloner le projet, puis installer les dépendances PHP:
+Cloner le projet, puis configurer l'environnement:
 
 ```bash
-composer install
-```
-
-Configurer les variables d'environnement dans `.env.local`, notamment la connexion à la base de données:
-
-```dotenv
-DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
+docker compose build --pull --no-cache
+docker compose up --wait
 ```
 
 Créer la base de données et appliquer les migrations:
 
 ```bash
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
+(dans le container)
+bin/console doctrine:database:create
+bin/console doctrine:migrations:migrate
 ```
 
 Charger les données de démonstration:
@@ -55,22 +51,10 @@ Charger les données de démonstration:
 php bin/console doctrine:fixtures:load
 ```
 
-Lancer le serveur de développement:
-
-```bash
-symfony server:start
-```
-
-ou, sans Symfony CLI:
-
-```bash
-php -S 127.0.0.1:8000 -t public
-```
-
 L'application est ensuite disponible à l'adresse:
 
 ```text
-http://127.0.0.1:8000
+http://localhost
 ```
 
 ## Tests
