@@ -18,31 +18,31 @@ class RestaurantType extends AbstractType
         $builder
             ->add('restaurant_name', options: [
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter restrant name'
-                    ])
+                    new NotBlank(
+                        message: 'Please enter restrant name'
+                    )
                 ]
             ])
             ->add('address', options: [
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter address',
-                    ]),
+                    new NotBlank(
+                        message: 'Please enter address',
+                    ),
                 ]
             ])
             ->add('tel', TelType::class, [
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter tel number',
-                    ]),
-                    new Length([
-                        'min' => 10,
-                        'minMessage' => 'Tel number has to be at least 10 digits',
-                    ]),
-                    new Regex([
-                        'pattern' => '/^\+?[0-9]{10,14}$/',
-                        'message' => 'Please enter a valid number'
-                    ])
+                    new NotBlank(
+                        message: 'Please enter tel number',
+                    ),
+                    new Length(
+                        min: 10,
+                        minMessage: 'Tel number has to be at least 10 digits',
+                    ),
+                    new Regex(
+                        pattern: '/^\+?[0-9]{10,14}$/',
+                        message: 'Please enter a valid number'
+                    )
                 ]
             ])
             

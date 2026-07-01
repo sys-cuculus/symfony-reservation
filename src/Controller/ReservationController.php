@@ -97,6 +97,7 @@ final class ReservationController extends AbstractController
 
 
     #[Route('/reservation/{id}/delete', name: 'app_reservation_delete', requirements: ['id' => Requirement::DIGITS])]
+    #[IsGranted('edit', subject: 'reservation')]
     public function delete(Reservation $reservation, EntityManagerInterface $manager): Response
     {
         $manager->remove($reservation);
