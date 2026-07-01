@@ -2,13 +2,13 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Reservation;
+use App\Entity\Restaurant;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class ReservationVoter extends Voter
+final class RestaurantVoter extends Voter
 {
     public const EDIT = 'edit';
     public const VIEW = 'view';
@@ -18,7 +18,7 @@ final class ReservationVoter extends Voter
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::EDIT, self::VIEW])
-            && $subject instanceof Reservation;
+            && $subject instanceof Restaurant;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
@@ -32,14 +32,11 @@ final class ReservationVoter extends Voter
             return false;
         }
 
-        // ... (check conditions and return true to grant permission) ...
-        if (in_array('ROLE_OWNER', $user->getRoles())) {
-            if ($subject->getRestaurant()->getOwner() === $user) {
-                return true;
-            }
+        if (!in_array('ROLE_OWNER', $user->getRoles())) {
+            $vote?->addReason('The user must have an oner role');
+            return false;
         }
         
-        return $subject->getCustomer() === $user;
-
+        return $subject->getOwner() === $user;
     }
 }

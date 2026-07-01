@@ -23,9 +23,9 @@ class OpeningHourType extends AbstractType
             ->add('dayOfWeek', EnumType::class, [
                 'class' => DayOfWeek::class,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please choose a day of week',
-                    ]),
+                    new NotBlank(
+                        message: 'Please choose a day of week',
+                    ),
                 ],
             ])
             ->add('openTime', TimeType::class, [

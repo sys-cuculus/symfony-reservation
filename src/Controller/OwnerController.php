@@ -32,6 +32,7 @@ final class OwnerController extends AbstractController
 
 
     #[Route('/restaurant/{id}', name: 'app_restaurant_detail', requirements: ['id' => Requirement::DIGITS])]
+    #[IsGranted('view', subject: 'restaurant')]
     public function show(#[CurrentUser] User  $user, Restaurant $restaurant): Response
     {
         if ($user->getId() !== $restaurant->getOwner()->getId()) {
@@ -73,12 +74,13 @@ final class OwnerController extends AbstractController
     }
 
 
-    #[Route('restaurant/{id}/delete', name: 'app_restaurant_delete', requirements: ['id' => Requirement::DIGITS])]
+    #[Route('/restaurant/{id}/delete', name: 'app_restaurant_delete', requirements: ['id' => Requirement::DIGITS])]
+    #[IsGranted('edit', subject: 'restaurant')]
     public function delete(Restaurant $restaurant, EntityManagerInterface $manager): Response
     {
         $manager->remove($restaurant);
         $manager->flush();
-        $this->addFlash('notice', 'Restaurant successfully deleted');
+        $this->addFlash('notice', 'Restaurant deleted successfully');
         
         return $this->redirectToRoute('app_dashboard');
     }
@@ -86,6 +88,7 @@ final class OwnerController extends AbstractController
 
 
     #[Route('/restaurant/{id}/opening-hours', name: 'app_restaurant_opening_hours', requirements: ['id' => Requirement::DIGITS])]
+    #[IsGranted('edit', subject: 'restaurant')]
     public function openingHours(
         #[CurrentUser] User  $user,
         Restaurant $restaurant,
@@ -107,6 +110,10 @@ final class OwnerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->flush();
             $this->addFlash('notice', 'Working hours set successfully');
+
+            return $this->redirectToRoute('app_restaurant_opening_hours', [
+                'id' => $restaurant->getId(),
+            ]);
         }
 
         return $this->render('owner/restaurant/openingHours.html.twig', [
